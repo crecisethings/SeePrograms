@@ -1,84 +1,68 @@
 #include<stdio.h>
+#include<stdlib.h>
 int arr[30];
 
-void swap(int *a,int *b)
+void merge(int arr[],int lb,int mid,int ub)
 {
-	int temp;
-	temp=*a;
-	*a=*b;
-	*b=temp;
-}
-
-int merge(int arr[], int lb,int mid,int ub)
-{
-	int i=lb;
-    int j=mid;
-    int k=lb;
     int b[30];
-
+    int i=lb,j=mid+1,k=lb;
     while(i<=mid && j<=ub)
     {
         if(arr[i]<=arr[j])
         {
             b[k]=arr[i];
-            i++;
-            k++;
+            i++;k++;
         }
-        else
+        else 
         {
             b[k]=arr[j];
-            j++;
-            i++;
+            j++;k++;
         }
+        
     }
     while(i<=mid)
     {
         b[k]=arr[i];
-            i++;
-            k++;
+            i++;k++;
     }
-    while(j<=ub)
+    while(j<=mid)
     {
- 
-         b[k]=arr[j];
-            j++;
-            i++;
+        b[k]=arr[j];
+            j++;k++;
     }
-    for(i=0;i<k;i++)
+    for(int i=0;i<k;i++)
     {
-            arr[i]=b[i];
+        arr[i]=b[i];
+    }
+
+}
+void mergeSort(int arr[],int lb,int ub)
+{
+    if(lb<ub)
+    {
+        int mid=(lb+ub)/2;
+        mergeSort(arr,lb,mid);
+        mergeSort(arr,mid+1,ub);
+        merge(arr,lb,mid,ub);
     }
 }
 
-void mergeSort(int arr[], int lb,int ub)
+int main()
 {
-	
-	int mid=(lb+ub)/2;
-    mergesort(arr,lb,mid);
-    mergesort(arr,mid+1,ub);
-    merge(arr,lb,mid,ub);
+    int N;
+    printf("Enter size of the array:");
+    scanf("%d",&N);
+    printf("Enter array elements:");
+    for(int i=0;i<N;i++)
+        scanf("%d",&arr[i]);
     
-}	
-void printArray(int arr[], int size) {
-  for (int i = 0; i < size; i++)
-    printf("%d ", arr[i]);
-  printf("\n");
+    mergeSort(arr,0,N-1);
+    printf("Sorted array:");
+    for(int i=0;i<N;i++)
+       printf("%d ",arr[i]);
+    
+
+    
+
+
 }
-
-
-
-void main()
-{
-	int n;
-	printf("Enter array size:");
-	scanf("%d",&n);
-	printf("Enter array of size %d:",n);
-	for(int i=0;i<n;i++)
-	{
-		scanf("%d",&arr[i]);
-	}
-	mergeSort(arr,0,n-1);
-	printf("The sorted array:");
-	printArray(arr,n);
-}
-	
